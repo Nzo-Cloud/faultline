@@ -98,4 +98,4 @@ GitHub: [Nzo-Cloud](https://github.com/Nzo-Cloud) | Portfolio: [lorenzobalitian.
 
 ## Project Status
 
-🟢 Active development — backend complete, frontend complete, deployment in progress.
+🟢 Live — [https://faultline-nzo.vercel.app](https://faultline-nzo.vercel.app)
