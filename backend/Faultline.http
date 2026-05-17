@@ -1,0 +1,6 @@
+@Faultline_HostAddress = http://localhost:5031
+
+GET {{Faultline_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
