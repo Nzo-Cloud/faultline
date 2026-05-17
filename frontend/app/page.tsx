@@ -18,7 +18,7 @@ type AgentStatus = 'pending' | 'running' | 'done';
 
 export default function Home() {
   const [errorInput, setErrorInput] = useState('');
-  const [agents, setAgents] = useState(DEFAULT_AGENTS);
+  const [agents, setAgents] = useState<{ name: string; label: string; status: AgentStatus }[]>(DEFAULT_AGENTS);
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
