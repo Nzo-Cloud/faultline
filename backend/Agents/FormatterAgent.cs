@@ -38,28 +38,30 @@ public class FormatterAgent
             - Known Pattern: {research.KnownPattern}
             - References: {string.Join(", ", research.References)}
 
-            Format this as a Debug Log entry using this EXACT markdown structure:
+            Respond in this EXACT format:
 
             TITLE: <short punchy title, max 8 words, e.g. "Null Reference in UserService.GetUser">
-
             MARKDOWN:
             ## Problem
-            <one paragraph describing what went wrong and when>
+            <one paragraph>
 
             ## Root Cause
-            <one paragraph explaining the exact technical reason>
+            <one paragraph>
 
             ## Fix Applied
-            <one paragraph describing what was changed to fix it>
+            <one paragraph>
 
             ## What I Learned
-            <one paragraph — key takeaway for the developer>
+            <one paragraph>
 
             ## References
-            <bullet list of references, or "None" if empty>
+            <bullet list>
 
-            Write in first person as if the developer is documenting their own fix.
-            Be concise. Each section is 2-4 sentences max.
+            Rules:
+            - TITLE line must be the very first line
+            - Write in first person
+            - Each section is 2-4 sentences max
+            - Do not add any text before TITLE:
             """;
 
         var raw = await _ai.CompleteAsync(prompt, ct);
@@ -71,20 +73,31 @@ public class FormatterAgent
         var result = new FormatterResult();
         var lines = raw.Split('\n');
 
+        // Find title on any line
         foreach (var line in lines)
         {
-            if (line.StartsWith("TITLE:"))
+            var trimmed = line.Trim();
+            if (trimmed.StartsWith("TITLE:"))
             {
-                result.Title = line.Replace("TITLE:", "").Trim();
+                result.Title = trimmed.Replace("TITLE:", "").Trim();
                 break;
             }
         }
 
-        var mdStart = raw.IndexOf("MARKDOWN:");
-        if (mdStart >= 0)
-            result.Markdown = raw.Substring(mdStart + "MARKDOWN:".Length).Trim();
+        // Extract markdown after MARKDOWN: marker
+        var mdIndex = raw.IndexOf("MARKDOWN:");
+        if (mdIndex >= 0)
+            result.Markdown = raw.Substring(mdIndex + "MARKDOWN:".Length).Trim();
         else
-            result.Markdown = raw.Trim();
+        {
+            // Fallback: grab everything from first ##
+            var fallback = raw.IndexOf("##");
+            result.Markdown = fallback >= 0 ? raw.Substring(fallback).Trim() : raw.Trim();
+        }
+
+        // If title still empty, generate from markdown
+        if (string.IsNullOrEmpty(result.Title))
+            result.Title = "Debug Log Entry";
 
         return result;
     }
