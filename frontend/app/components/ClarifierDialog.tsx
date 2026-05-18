@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { IconAlertTriangle, IconArrowRight } from '@tabler/icons-react';
 
 interface Props {
   questions: string[];
@@ -16,17 +17,30 @@ export default function ClarifierDialog({ questions, onConfirm }: Props) {
   };
 
   return (
-    <div className="border border-yellow-300 bg-yellow-50 rounded-lg p-5 my-4">
-      <h3 className="font-semibold text-yellow-800 mb-3">
-        🤔 A few quick questions before we analyze:
-      </h3>
-      <div className="flex flex-col gap-4">
+    <div style={{
+      background: 'var(--bg-surface)',
+      border: '0.5px solid var(--vermillion-border)',
+      borderRadius: '12px',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <IconAlertTriangle size={16} color="var(--vermillion)" />
+        <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--vermillion)' }}>
+          A few quick questions before we continue
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {questions.map((question, i) => (
-          <div key={i}>
-            <label className="block text-sm text-yellow-900 mb-1">{question}</label>
+          <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              {question}
+            </label>
             <input
               type="text"
-              className="w-full border border-yellow-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
               placeholder="Your answer..."
               value={answers[i]}
               onChange={(e) => {
@@ -34,15 +48,43 @@ export default function ClarifierDialog({ questions, onConfirm }: Props) {
                 updated[i] = e.target.value;
                 setAnswers(updated);
               }}
+              style={{
+                background: 'var(--bg-elevated)',
+                border: '0.5px solid var(--border)',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                fontSize: '13px',
+                color: 'var(--text-primary)',
+                outline: 'none',
+                fontFamily: 'inherit',
+                width: '100%',
+              }}
+              onFocus={e => e.target.style.borderColor = 'var(--vermillion)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
         ))}
       </div>
+
       <button
         onClick={handleConfirm}
-        className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+        style={{
+          background: 'var(--vermillion)',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '8px',
+          padding: '10px 20px',
+          fontSize: '13px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          alignSelf: 'flex-start',
+        }}
       >
-        Continue Analysis →
+        Continue Analysis
+        <IconArrowRight size={14} />
       </button>
     </div>
   );

@@ -1,3 +1,5 @@
+import { IconCheck, IconLoader2, IconCircle } from '@tabler/icons-react';
+
 type AgentStatus = 'pending' | 'running' | 'done';
 
 interface Agent {
@@ -12,26 +14,75 @@ interface Props {
 
 export default function AgentProgress({ agents }: Props) {
   return (
-    <div className="flex flex-col gap-2 my-6">
+    <div style={{
+      background: 'var(--bg-surface)',
+      border: '0.5px solid var(--border)',
+      borderRadius: '12px',
+      padding: '16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+    }}>
       {agents.map((agent) => (
-        <div key={agent.name} className="flex items-center gap-3 text-sm">
-          <span className="w-6 text-center">
-            {agent.status === 'done' && '✅'}
-            {agent.status === 'running' && '⏳'}
-            {agent.status === 'pending' && '○'}
+        <div key={agent.name} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          
+          {/* Status icon */}
+          <div style={{
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            background: agent.status === 'done'
+              ? 'rgba(232,87,42,0.15)'
+              : agent.status === 'running'
+              ? 'rgba(232,165,42,0.1)'
+              : 'var(--bg-elevated)',
+          }}>
+            {agent.status === 'done' && <IconCheck size={12} color="var(--vermillion)" />}
+            {agent.status === 'running' && (
+              <IconLoader2
+                size={12}
+                color="#E8A52A"
+                style={{ animation: 'spin 1s linear infinite' }}
+              />
+            )}
+            {agent.status === 'pending' && <IconCircle size={12} color="var(--text-dim)" />}
+          </div>
+
+          {/* Agent name */}
+          <span style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: 'var(--text-muted)',
+            width: '88px',
+            flexShrink: 0,
+          }}>
+            [{agent.name.toLowerCase()}]
           </span>
-          <span className="font-mono text-xs uppercase tracking-wider w-24 text-gray-500">
-            [{agent.name}]
-          </span>
-          <span className={
-            agent.status === 'done' ? 'text-green-600' :
-            agent.status === 'running' ? 'text-yellow-600 animate-pulse' :
-            'text-gray-400'
-          }>
+
+          {/* Label */}
+          <span style={{
+            fontSize: '13px',
+            color: agent.status === 'done'
+              ? 'var(--vermillion)'
+              : agent.status === 'running'
+              ? '#E8A52A'
+              : 'var(--text-dim)',
+          }}>
             {agent.label}
           </span>
         </div>
       ))}
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

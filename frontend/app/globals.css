@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --vermillion: #E8572A;
+  --vermillion-dim: rgba(232, 87, 42, 0.12);
+  --vermillion-border: rgba(232, 87, 42, 0.25);
+  --bg-base: #0f0f0f;
+  --bg-surface: #161616;
+  --bg-elevated: #1e1e1e;
+  --border: #2a2a2a;
+  --border-subtle: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --text-dim: #333333;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans), -apple-system, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--vermillion-dim);
+  color: var(--vermillion);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated);
+  border-radius: 3px;
 }
