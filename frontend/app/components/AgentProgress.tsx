@@ -14,63 +14,51 @@ interface Props {
 
 export default function AgentProgress({ agents }: Props) {
   return (
-    <div style={{
-      background: 'var(--bg-surface)',
-      border: '0.5px solid var(--border)',
-      borderRadius: '12px',
-      padding: '16px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    }}>
+    <div className="paper-panel">
       {agents.map((agent) => (
-        <div key={agent.name} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          
-          {/* Status icon */}
+        <div key={agent.name} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 0', borderBottom: '1px solid var(--border-subtle)' }}>
           <div style={{
-            width: '20px',
-            height: '20px',
+            width: '24px',
+            height: '24px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
             background: agent.status === 'done'
-              ? 'rgba(232,87,42,0.15)'
+              ? 'rgba(79,111,74,0.16)'
               : agent.status === 'running'
-              ? 'rgba(232,165,42,0.1)'
-              : 'var(--bg-elevated)',
+              ? 'rgba(217,105,61,0.15)'
+              : 'rgba(173,149,120,0.12)',
           }}>
-            {agent.status === 'done' && <IconCheck size={12} color="var(--vermillion)" />}
+            {agent.status === 'done' && <IconCheck size={12} color="#4f6f4a" />}
             {agent.status === 'running' && (
               <IconLoader2
                 size={12}
-                color="#E8A52A"
+                color="#d9693d"
                 style={{ animation: 'spin 1s linear infinite' }}
               />
             )}
             {agent.status === 'pending' && <IconCircle size={12} color="var(--text-dim)" />}
           </div>
 
-          {/* Agent name */}
           <span style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
+            fontSize: '12px',
             color: 'var(--text-muted)',
-            width: '88px',
+            minWidth: '94px',
             flexShrink: 0,
           }}>
             [{agent.name.toLowerCase()}]
           </span>
 
-          {/* Label */}
           <span style={{
-            fontSize: '13px',
+            fontSize: '14px',
             color: agent.status === 'done'
-              ? 'var(--vermillion)'
+              ? '#4f6f4a'
               : agent.status === 'running'
-              ? '#E8A52A'
-              : 'var(--text-dim)',
+              ? '#d9693d'
+              : 'var(--text-muted)',
           }}>
             {agent.label}
           </span>

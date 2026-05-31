@@ -17,26 +17,18 @@ export default function ClarifierDialog({ questions, onConfirm }: Props) {
   };
 
   return (
-    <div style={{
-      background: 'var(--bg-surface)',
-      border: '0.5px solid var(--vermillion-border)',
-      borderRadius: '12px',
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <IconAlertTriangle size={16} color="var(--vermillion)" />
-        <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--vermillion)' }}>
+    <div className="clarifier-panel" style={{ gap: '18px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <IconAlertTriangle size={18} color="#d9693d" />
+        <span style={{ fontSize: '14px', fontWeight: 700, color: '#d9693d' }}>
           A few quick questions before we continue
         </span>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {questions.map((question, i) => (
-          <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+          <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
               {question}
             </label>
             <input
@@ -49,17 +41,18 @@ export default function ClarifierDialog({ questions, onConfirm }: Props) {
                 setAnswers(updated);
               }}
               style={{
-                background: 'var(--bg-elevated)',
-                border: '0.5px solid var(--border)',
-                borderRadius: '8px',
-                padding: '10px 14px',
-                fontSize: '13px',
+                background: 'rgba(255,255,255,0.94)',
+                border: '1px solid var(--border)',
+                borderRadius: '14px',
+                padding: '14px 16px',
+                fontSize: '14px',
                 color: 'var(--text-primary)',
                 outline: 'none',
                 fontFamily: 'inherit',
                 width: '100%',
+                transition: 'border-color 0.18s ease',
               }}
-              onFocus={e => e.target.style.borderColor = 'var(--vermillion)'}
+              onFocus={e => e.target.style.borderColor = 'rgba(103,87,255,0.4)'}
               onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
@@ -68,23 +61,11 @@ export default function ClarifierDialog({ questions, onConfirm }: Props) {
 
       <button
         onClick={handleConfirm}
-        style={{
-          background: 'var(--vermillion)',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '8px',
-          padding: '10px 20px',
-          fontSize: '13px',
-          fontWeight: 500,
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          alignSelf: 'flex-start',
-        }}
+        className="action-button primary"
+        style={{ alignSelf: 'flex-start', padding: '12px 22px' }}
       >
         Continue Analysis
-        <IconArrowRight size={14} />
+        <IconArrowRight size={16} />
       </button>
     </div>
   );

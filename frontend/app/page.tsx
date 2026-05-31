@@ -25,7 +25,6 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState('');
   const [waitingForUser, setWaitingForUser] = useState(false);
   const [clarifyQuestions, setClarifyQuestions] = useState<string[]>([]);
-  const [lastError, setLastError] = useState('');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -48,7 +47,6 @@ export default function Home() {
       setResult(null);
       setErrorMessage('');
       setWaitingForUser(false);
-      setLastError(errorInput);
     }
 
     setIsRunning(true);
@@ -99,160 +97,68 @@ export default function Home() {
     : '';
 
   return (
-    <main style={{ minHeight: '100vh', background: 'var(--bg-base)' }}>
-      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 20px 60px' }}>
-
-        {/* Topbar */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '16px 0',
-          borderBottom: '0.5px solid var(--border-subtle)',
-          marginBottom: '48px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '28px', height: '28px',
-              background: 'var(--vermillion)',
-              borderRadius: '6px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <IconBolt size={16} color="#fff" />
-            </div>
-            <span style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
-              Faultline
-            </span>
+    <main className="app-shell">
+      <div className="app-container">
+        <header className="topbar">
+          <div className="brand-pill">
+            <IconBolt size={18} color="#5d4eb6" />
+            <span>Faultline</span>
           </div>
-          <span style={{
-            fontSize: '11px',
-            color: 'var(--vermillion)',
-            background: 'var(--vermillion-dim)',
-            padding: '2px 8px',
-            borderRadius: '4px',
-            border: '0.5px solid var(--vermillion-border)',
-          }}>
-            Beta
-          </span>
-        </div>
+          <span className="beta-badge">Beta</span>
+        </header>
 
-        {/* Hero */}
-        <div style={{ marginBottom: '40px' }}>
-          <div style={{ fontSize: '11px', color: 'var(--vermillion)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '12px' }}>
-            Debug · Document · Ship
-          </div>
-          <h1 style={{ fontSize: '36px', fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: '12px' }}>
-            Turn every bug into<br />
-            <span style={{ color: 'var(--vermillion)' }}>portfolio content.</span>
+        <section className="hero-panel" style={{ marginBottom: '40px' }}>
+          <div className="hero-eyebrow">Debug · Document · Ship</div>
+          <h1 className="hero-title">
+            Turn every bug into a <span className="accent">crafted artifact</span>.
           </h1>
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '480px' }}>
-            Paste your error. Five AI agents analyze, document, and format it into a Debug Log entry — automatically.
+          <p className="hero-copy">
+            Paste your error and let the system transform it into a structured debug story with agent-driven insight, context, and formatting.
           </p>
-        </div>
+        </section>
 
-        {/* Input */}
-        <div style={{
-          background: 'var(--bg-surface)',
-          border: '0.5px solid var(--border)',
-          borderRadius: '12px',
-          overflow: 'hidden',
-          marginBottom: '16px',
-        }}>
-          <div style={{
-            padding: '12px 16px',
-            borderBottom: '0.5px solid var(--border-subtle)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}>
-            <IconTerminal2 size={15} color="var(--text-muted)" />
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Paste your error or stack trace</span>
-            <div style={{ display: 'flex', gap: '5px', marginLeft: 'auto' }}>
-              {['#ff5f57','#ffbd2e','#28c840'].map(c => (
-                <div key={c} style={{ width: '8px', height: '8px', borderRadius: '50%', background: c }} />
-              ))}
-            </div>
+        <section className="input-panel" style={{ marginBottom: '20px' }}>
+          <div className="glass-note" style={{ marginBottom: '20px' }}>
+            <IconTerminal2 size={16} color="#6757ff" />
+            Paste the stack trace, exception, or console dump.
           </div>
 
-          <textarea
-            style={{
-              width: '100%',
-              minHeight: '140px',
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              padding: '16px',
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              fontFamily: 'var(--font-mono)',
-              lineHeight: 1.6,
-              resize: 'vertical',
-            }}
-            placeholder="NullReferenceException: Object reference not set to an instance of an object..."
-            value={errorInput}
-            onChange={e => setErrorInput(e.target.value)}
-            disabled={isRunning}
-          />
+          <div className="textarea-panel">
+            <textarea
+              placeholder="NullReferenceException: Object reference not set to an instance of an object..."
+              value={errorInput}
+              onChange={e => setErrorInput(e.target.value)}
+              disabled={isRunning}
+            />
+          </div>
 
-          <div style={{
-            padding: '10px 16px',
-            borderTop: '0.5px solid var(--border-subtle)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-            <span style={{
-              fontSize: '12px',
-              color: errorInput.length > 3000 ? '#E8572A' : 'var(--text-dim)',
-              fontFamily: 'var(--font-mono)',
-            }}>
-              {errorInput.length} / 3000
-            </span>
+          <div className="input-actions" style={{ marginTop: '18px' }}>
+            <span className="mini-label">{errorInput.length} / 3000</span>
             <button
+              className="action-button primary"
               onClick={handleSubmit}
               disabled={isRunning || !errorInput.trim() || errorInput.length > 3000}
-              style={{
-                background: isRunning || !errorInput.trim() ? 'var(--bg-elevated)' : 'var(--vermillion)',
-                color: isRunning || !errorInput.trim() ? 'var(--text-muted)' : '#fff',
-                border: 'none',
-                padding: '8px 20px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: isRunning || !errorInput.trim() ? 'not-allowed' : 'pointer',
-                transition: 'all 0.15s',
-              }}
+              style={{ opacity: isRunning || !errorInput.trim() ? 0.65 : 1 }}
             >
               {isRunning ? 'Analyzing...' : 'Analyze →'}
             </button>
           </div>
-        </div>
+        </section>
 
-        {/* Error message */}
         {errorMessage && (
-          <div style={{
-            background: 'rgba(232,87,42,0.08)',
-            border: '0.5px solid var(--vermillion-border)',
-            borderRadius: '8px',
-            padding: '12px 16px',
-            fontSize: '13px',
-            color: 'var(--vermillion)',
-            marginBottom: '16px',
-          }}>
+          <div className="output-panel" style={{ marginBottom: '16px', borderColor: 'rgba(230,120,47,0.25)', background: 'rgba(230,120,47,0.08)', color: '#a04620' }}>
             {errorMessage}
           </div>
         )}
 
-        {/* Agent progress */}
         {(isRunning || result || waitingForUser) && (
-          <div style={{ marginBottom: '16px' }}>
+          <div className="status-panel" style={{ marginBottom: '16px' }}>
             <AgentProgress agents={agents} />
           </div>
         )}
 
-        {/* Clarifier */}
         {waitingForUser && clarifyQuestions.length > 0 && (
-          <div style={{ marginBottom: '16px' }}>
+          <div className="clarifier-panel" style={{ marginBottom: '16px' }}>
             <ClarifierDialog
               questions={clarifyQuestions}
               onConfirm={(ctx) => { setWaitingForUser(false); runAnalysis(ctx); }}
@@ -260,18 +166,18 @@ export default function Home() {
           </div>
         )}
 
-        {/* Output */}
         {result && (
-          <DebugLogOutput
-            title={result.formatted.title}
-            markdown={result.formatted.markdown}
-            errorType={result.classification.errorType}
-            language={result.classification.summary}
-            onRetry={handleRetry}
-            shareUrl={shareUrl}
-          />
+          <div className="output-panel">
+            <DebugLogOutput
+              title={result.formatted.title}
+              markdown={result.formatted.markdown}
+              errorType={result.classification.errorType}
+              language={result.classification.summary}
+              onRetry={handleRetry}
+              shareUrl={shareUrl}
+            />
+          </div>
         )}
-
       </div>
     </main>
   );

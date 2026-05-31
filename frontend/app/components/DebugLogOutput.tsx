@@ -11,12 +11,12 @@ interface Props {
 }
 
 const errorTypeColors: Record<string, string> = {
-  runtime_exception: '#E8572A',
-  syntax_error: '#E8A52A',
-  missing_config: '#4A9EE8',
-  network_timeout: '#9B59B6',
-  permission_denied: '#E84393',
-  dependency_missing: '#1DB584',
+  runtime_exception: '#d9693d',
+  syntax_error: '#e6a032',
+  missing_config: '#4a9ee8',
+  network_timeout: '#9b59b6',
+  permission_denied: '#e84393',
+  dependency_missing: '#1db584',
   unknown: '#888888',
 };
 
@@ -37,56 +37,49 @@ export default function DebugLogOutput({ title, markdown, errorType, language, o
   };
 
   const accentColor = errorTypeColors[errorType] || '#888888';
-
   const sections = markdown.split(/(?=## )/).filter(Boolean);
 
   return (
-    <div style={{
-      background: 'var(--bg-surface)',
-      border: '0.5px solid var(--border)',
-      borderRadius: '12px',
-      overflow: 'hidden',
-    }}>
-      {/* Header */}
+    <div className="paper-panel" style={{ overflow: 'hidden' }}>
       <div style={{
-        padding: '14px 16px',
-        borderBottom: '0.5px solid var(--border-subtle)',
+        padding: '20px 22px',
+        borderBottom: '1px solid var(--border-subtle)',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        gap: '12px',
+        gap: '16px',
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
             Debug Log
           </span>
           {title && (
-            <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {title}
             </span>
           )}
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {errorType && (
               <span style={{
-                fontSize: '11px',
-                padding: '3px 8px',
-                borderRadius: '4px',
-                fontWeight: 500,
+                fontSize: '12px',
+                padding: '6px 10px',
+                borderRadius: '999px',
+                fontWeight: 700,
                 background: `${accentColor}20`,
                 color: accentColor,
-                border: `0.5px solid ${accentColor}40`,
+                border: `1px solid ${accentColor}40`,
               }}>
                 {errorType.replace(/_/g, ' ')}
               </span>
             )}
             {language && (
               <span style={{
-                fontSize: '11px',
-                padding: '3px 8px',
-                borderRadius: '4px',
-                background: 'var(--bg-elevated)',
+                fontSize: '12px',
+                padding: '6px 10px',
+                borderRadius: '999px',
+                background: 'rgba(255,255,255,0.9)',
                 color: 'var(--text-secondary)',
-                border: '0.5px solid var(--border)',
+                border: '1px solid var(--border)',
               }}>
                 {language}
               </span>
@@ -94,80 +87,38 @@ export default function DebugLogOutput({ title, markdown, errorType, language, o
           </div>
         </div>
 
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-          <button onClick={onRetry} style={{
-            background: 'var(--bg-elevated)',
-            border: '0.5px solid var(--border)',
-            color: 'var(--text-secondary)',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-          }}>
-            <IconRefresh size={13} /> Retry
+        <div className="output-actions">
+          <button onClick={onRetry}>
+            <IconRefresh size={14} /> Retry
           </button>
-          <button onClick={handleShare} style={{
-            background: 'var(--bg-elevated)',
-            border: '0.5px solid var(--border)',
-            color: shared ? 'var(--vermillion)' : 'var(--text-secondary)',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-          }}>
-            <IconShare size={13} /> {shared ? 'Copied!' : 'Share'}
+          <button onClick={handleShare} style={{ color: shared ? '#6757ff' : undefined }}>
+            <IconShare size={14} /> {shared ? 'Copied!' : 'Share'}
           </button>
-          <button onClick={handleCopy} style={{
-            background: copied ? 'var(--vermillion)' : 'var(--bg-elevated)',
-            border: `0.5px solid ${copied ? 'var(--vermillion)' : 'var(--border)'}`,
-            color: copied ? '#fff' : 'var(--text-secondary)',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            transition: 'all 0.15s',
-          }}>
-            {copied ? <IconCheck size={13} /> : <IconCopy size={13} />}
-            {copied ? 'Copied!' : 'Copy'}
+          <button onClick={handleCopy} style={{ color: copied ? '#fff' : undefined, background: copied ? '#6757ff' : undefined, borderColor: copied ? '#6757ff' : undefined }}>
+            {copied ? <IconCheck size={14} /> : <IconCopy size={14} />} {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>
       </div>
 
-      {/* Body */}
-      <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
         {sections.map((section, i) => {
           const lines = section.trim().split('\n');
           const heading = lines[0].replace('## ', '');
           const body = lines.slice(1).join('\n').trim();
           return (
             <div key={i}>
-              {i > 0 && <div style={{ height: '0.5px', background: 'var(--border-subtle)', marginBottom: '14px' }} />}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {i > 0 && <div style={{ height: '1px', background: 'var(--border-subtle)', marginBottom: '16px' }} />}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <span style={{
-                  fontSize: '10px',
-                  color: 'var(--vermillion)',
+                  fontSize: '11px',
+                  color: 'var(--accent)',
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
-                  fontWeight: 500,
+                  fontWeight: 700,
                 }}>
                   {heading}
                 </span>
-                <span style={{
-                  fontSize: '13px',
-                  color: 'var(--text-secondary)',
-                  lineHeight: '1.7',
-                  fontFamily: 'var(--font-mono)',
-                }}>
+                <span className="code-section">
                   {body}
                 </span>
               </div>
